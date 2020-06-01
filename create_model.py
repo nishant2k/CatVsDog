@@ -1,12 +1,13 @@
 
-
+"""Creating model for Dog vs Cat classification model"""
+#importing necessery libraries
 import numpy as np
 import matplotlib.pyplot as plt
 import os
 import cv2
 from tqdm import tqdm
 
-DATADIR = "C:/Users/91811/Anaconda3/Desktop/kagglecatsanddogs_3367a/PetImages"
+DATADIR = "C:/Users/91811/Anaconda3/Desktop/kagglecatsanddogs_3367a/PetImages" # path of the directory conatining the cat and dog dataset
 
 CATEGORIES = ["Dog", "Cat"]
 
@@ -20,12 +21,13 @@ for category in CATEGORIES:  # do dogs and cats
         break  # we just want one for now so break
     break  #...and one more!
     
-IMG_SIZE = 50
+IMG_SIZE = 50 #resizing each images to particular size
 
 new_array = cv2.resize(img_array, (IMG_SIZE, IMG_SIZE))
 plt.imshow(new_array, cmap='gray')
 plt.show()
 
+"""Creating the training data for the model"""
 training_data = []
 
 def create_training_data():
@@ -41,11 +43,31 @@ def create_training_data():
                 training_data.append([new_array, class_num])  # add this to our training_data
             except Exception as e:  # in the interest in keeping the output clean...
                 pass
-            #except OSError as e:
-            #    print("OSErrroBad img most likely", e, os.path.join(path,img))
-            #except Exception as e:
-            #    print("general exception", e, os.path.join(path,img))
+create_training_data() # calling the function to create our training model
 
-create_training_data()
+print(len(training_data)) # lets check the length of our training data
 
-print(len(training_data))
+import random
+random.shuffle(training_data) #shuffle our data 
+#Create dataset X containing the encoded images and y will be conatining the index of the image
+X = []
+y = []
+
+for features,label in training_data:
+    X.append(features)
+    y.append(label)
+
+#print(X[0].reshape(-1, IMG_SIZE, IMG_SIZE, 1))
+
+X = np.array(X).reshape(-1, IMG_SIZE, IMG_SIZE, 1) 
+
+import pickle
+
+pickle_out = open("X.pickle","wb") #Using pickle for saving the array and corresponding index
+pickle.dump(X, pickle_out)
+pickle_out.close()
+
+pickle_out = open("y.pickle","wb")
+pickle.dump(y, pickle_out)
+pickle_out.close()
+"""We can load our model by importing the pickles """
