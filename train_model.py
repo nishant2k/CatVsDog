@@ -27,6 +27,15 @@ model.add(Conv2D(256, (3, 3)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
+model.add(Conv2D(256, (3, 3)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Conv2D(256, (3, 3)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+
 model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
 
 model.add(Dense(64))
@@ -38,5 +47,5 @@ model.compile(loss='binary_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
 
-model.fit(X, y, batch_size=32, epochs=3, validation_split=0.3)
-model.save('64x3-CNN.model') #saving the model for further use
+model.fit(X, y, batch_size=64, epochs=3, validation_split=0.2)
+model.save('CNN_model.model') #saving the model for further use
